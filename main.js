@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MoeShareAutoPost
 // @namespace    https://github.com/fhyxz001/MoeShareAutoPost
-// @version      0.1
+// @version      0.2
 // @description  萌享论坛资源区发贴格式化工具，用于帮助用户方便的进行资源发布
 // @author       hexbkyoma
 // @match        https://moeshare.cc/post.php?fid=22
@@ -48,9 +48,9 @@
         GenerateInput(postWindow,"封面","cover","请输入封面文件图床链接");
         // 简介区输入框
         GenerateTextArea(postWindow,"简介","info","请输入简介内容","200px","80%");
-        GenerateURL(postWindow,"moelist","moelistURL","","200px","80%");
+        // GenerateURL(postWindow,"moelist","moelistURL","","200px","80%");
         // moelist区
-        GenerateTextArea(postWindow,"moelist","moelist","请输入moelist信息","200px","80%");
+        // GenerateTextArea(postWindow,"moelist","moelist","请输入moelist信息","200px","80%");
 
         // 出售区输入框
         GenerateInput(postWindow,"国库卷","sell","例如：0，代表0购买");
@@ -75,8 +75,8 @@
             finalInfo += "\n";
             finalInfo += postWindow.document.getElementById("info").value;
             finalInfo += "\n";
-            finalInfo += postWindow.document.getElementById("moelist").value;
-            finalInfo += "\n";
+            // finalInfo += postWindow.document.getElementById("moelist").value;
+            // finalInfo += "\n";
             if(postWindow.document.getElementById("md").value != ""){
                 finalInfo += "本下载链接需要"+postWindow.document.getElementById("md").value+"MD才能查看"+"\n";
                 if(postWindow.document.getElementById("sell").value != ""){
