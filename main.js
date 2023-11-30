@@ -8,7 +8,7 @@
 // @match        https://moeshare.cc/post.php?fid=33
 // @match        https://moeshare.cc/post.php?fid=28
 // @icon         https://www.google.com/s2/favicons?domain=tampermonkey.net
-// @grant        GM_log
+// @license MIT
 // ==/UserScript==
 
 (function() {
