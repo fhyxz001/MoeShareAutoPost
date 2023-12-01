@@ -115,13 +115,13 @@
             //中文实体区域的帖子生成
             //获取Dom中id为textarea的元素，即简介输入框
             let finalInfo = "";
-            finalInfo+="[img]"+postWindow.document.getElementById("cover").value+"[/img]";
+            finalInfo+="【封面】\n[img]"+postWindow.document.getElementById("cover").value+"[/img]";
             finalInfo+="\n";
-            finalInfo+="[quote]"+postWindow.document.getElementById("info").value+"[/quote]";
+            finalInfo+="[quote]【简介】\n"+postWindow.document.getElementById("info").value+"[/quote]";
             finalInfo+="\n";
             if(postWindow.document.getElementById("scanner").value !==""){
                 var scanners = postWindow.document.getElementById("scanner").value.split("&")
-                finalInfo+="[quote]"
+                finalInfo+="[quote]【扫者】"
                 for (let i = 0; i < scanners.length; i++) {
                     finalInfo+="Scan by "+scanners[i]+"\n";
                 }
@@ -138,16 +138,16 @@
             if(postWindow.document.getElementById("attribute").value !==""){
                 var attributeKey =postWindow.document.getElementById("attribute").value
                 if(attributeKey == 1) {
-                    finalInfo += "[quote]【首發】[/quote]\n";
+                    finalInfo += "[quote]【资源属性】\n【首發】[/quote]\n";
                 }else {
-                    finalInfo += "[quote]【補檔】[/quote]\n";
+                    finalInfo += "[quote]【资源属性】\n【補檔】 下附失效链接[/quote]\n";
                 }
             }
             if(postWindow.document.getElementById("certification").value !==""){
                 finalInfo+="[quote]【失效链接】\n"+postWindow.document.getElementById("certification").value+"[/quote]\n";
             }
             if(postWindow.document.getElementById("note").value !==""){
-                finalInfo+="[quote]已添加注释："+postWindow.document.getElementById("note").value+"[/quote]\n";
+                finalInfo+="[quote]【注释信息】\n已添加注释："+postWindow.document.getElementById("note").value+"[/quote]\n";
             }
             finalInfo+="[quote]【单卷信息】\n"+postWindow.document.getElementById("moelist").value+"[/quote]\n";
             if(postWindow.document.getElementById("md").value !==""){
