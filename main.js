@@ -10,12 +10,14 @@
 // @match        https://moeshare.cc/post.php?fid=4
 // @match        https://moeshare.cc/post.php?fid=42
 // @match        https://moeshare.cc/post.php?fid=43
+// @match        https://moeshare.cc/post.php?fid=3
 // @match        https://www.moeshare.cc/post.php?fid=22
 // @match        https://www.moeshare.cc/post.php?fid=33
 // @match        https://www.moeshare.cc/post.php?fid=28
 // @match        https://www.moeshare.cc/post.php?fid=4
 // @match        https://www.moeshare.cc/post.php?fid=42
 // @match        https://www.moeshare.cc/post.php?fid=43
+// @match        https://www.moeshare.cc/post.php?fid=3
 // @icon         https://www.google.com/s2/favicons?domain=tampermonkey.net
 // @license MIT
 // @downloadURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.user.js
@@ -25,6 +27,7 @@
 (function() {
     'use strict';
     var attribute = [{key:1,label:'首发'},{key:2,label:'补档'}]
+    var enAttribute = [{key:1,label:'首发'},{key:2,label:'补档'},{key:3,label:'二次分流'}]
     // 创建一个按钮
     var newButton = document.createElement("i");
     newButton.innerHTML = "发帖模板";
@@ -89,11 +92,10 @@
                 //简介区输入框
                 GenerateTextArea(postWindow,"简介","info","请在此输入简介内容","200px","80%");
                 //单卷信息输入框
-                GenerateURL(postWindow,"moelist","moelistURL");
+                GenerateMoelistURL(postWindow,"moelist","moelistURL");
                 GenerateTextArea(postWindow,"单卷信息","moelist","请在此输入单卷信息","200px","80%");
                 //属性区输入框
-
-                let selectValue = attribute[0].key;
+                var selectValue = attribute[0].key;
                 GenerateSwitch(postWindow,"资源属性","attribute",attribute,selectValue);
                 GenerateInput(postWindow,"失效链接","certification","请输入失效链接，可选项，影响评分");
                 //注释输入框
@@ -105,13 +107,107 @@
                 // 下载链接区输入框
                 GenerateTextArea(postWindow,"受限内容","download","可在此处输入下载链接、解压密码等信息","50px","80%");
                 //生成简介按钮区**********
-                GenerateButton(postWindow,"生成帖子",info_cn_entity_area_info_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"生成帖子",info_cn_entity_area_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                break;
+            case "3":
+                //在窗口中添加一个外文原版分享区发帖模板标题
+                postWindow.document.title = "外文原版分享区发帖模板";
+                GenerateInput(postWindow,"国家","country","例如：日本");
+                GenerateInput(postWindow,"作者","author","请输入作者名称");
+                GenerateInput(postWindow,"漫画书名","book","请输入漫画名称");
+                GenerateInput(postWindow,"卷数","volume","例如：1-7未、1-7完、单7未、单7完");
+                GenerateInput(postWindow,"网盘名称","disk","例如：BD、百度");
+                //添加一个按钮，生成标题
+                GenerateButton(postWindow,"生成标题",title_en_original_area_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                //封面区输入框
+                GenerateInput(postWindow,"封面","cover","请输入封面文件的图床链接");
+                //简介区输入框
+                GenerateTextArea(postWindow,"简介","info","请在此输入简介内容","200px","80%");
+                //单卷信息输入框
+                GenerateMoelistURL(postWindow,"moelist","moelistURL");
+                GenerateTextArea(postWindow,"单卷信息","moelist","请在此输入单卷信息","200px","80%");
+                //属性区输入框
+                var enSelectValue = enAttribute[0].key;
+                GenerateSwitch(postWindow,"资源属性","attribute",enAttribute,enSelectValue);
+                //失效链接输入框
+                GenerateInput(postWindow,"失效链接","certification","请输入失效链接，可选项，影响评分");
+                //注释输入框
+                GenerateTextArea(postWindow,"注释","note","格式：ID+moeshare，可选项，影响评分","50px","80%");
+                // 出售区输入框
+                GenerateInput(postWindow,"售价(国库券)","sell","例如：0，代表帖子售价为0国库券");
+                // MD可见区输入框
+                GenerateInput(postWindow,"MD限制","md","例如：20，代表隐藏内容需20MD以上可见");
+                // 下载链接区输入框
+                GenerateTextArea(postWindow,"受限内容","download","可在此处输入下载链接、解压密码等信息","50px","80%");
+                //生成简介按钮区**********
+                GenerateButton(postWindow,"生成帖子",info_en_original_area_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
                 break;
             default:
                 alert("请在萌享论坛资源区使用本脚本");
                 return;
         }
-        function info_cn_entity_area_info_create(){
+        function info_en_original_area_create(){
+            //外文原版分享区的帖子生成
+            //获取Dom中id为textarea的元素，即简介输入框
+            let finalInfo ="【封面】\n[img]"+postWindow.document.getElementById("cover").value+"[/img]";
+            finalInfo+="\n";
+            finalInfo+="[quote]【简介】\n"+postWindow.document.getElementById("info").value+"[/quote]";
+            finalInfo+="\n";
+            if(postWindow.document.getElementById("attribute").value !==""){
+                var attributeKey =postWindow.document.getElementById("attribute").value
+                if(attributeKey == 1) {
+                    finalInfo += "[quote]【资源属性】\n【首發】[/quote]\n";
+                }else if(attributeKey == 2){
+                    finalInfo += "[quote]【资源属性】\n【補檔】 下附失效链接[/quote]\n";
+                }else {
+                    finalInfo += "[quote]【资源属性】\n【二次分流】[/quote]\n";
+                }
+            }
+            if(postWindow.document.getElementById("certification").value !==""){
+                finalInfo+="[quote]【失效链接】\n"+postWindow.document.getElementById("certification").value+"[/quote]\n";
+            }
+            if(postWindow.document.getElementById("note").value !==""){
+                finalInfo+="[quote]【注释信息】\n已添加注释："+postWindow.document.getElementById("note").value+"[/quote]\n";
+            }
+            finalInfo+="[quote]【单卷信息】\n"+postWindow.document.getElementById("moelist").value+"[/quote]\n";
+            if(postWindow.document.getElementById("md").value !=="") {
+                finalInfo += "本下载链接需要" + postWindow.document.getElementById("md").value + "MD才能查看" + "\n";
+                if (postWindow.document.getElementById("sell").value !== "") {
+                    finalInfo += "[sell=" + postWindow.document.getElementById("sell").value + ",2]";
+                    finalInfo += "[hide=" + postWindow.document.getElementById("md").value + ",rvrc]" + "\n";
+                    finalInfo += postWindow.document.getElementById("download").value + "\n";
+                    finalInfo += "[/hide][/sell]";
+                } else {
+                    finalInfo += "[hide=" + postWindow.document.getElementById("md").value + ",rvrc]" + "\n";
+                    finalInfo += postWindow.document.getElementById("download").value + "\n";
+                    finalInfo += "[/hide]";
+                }
+            }else {
+                if (postWindow.document.getElementById("sell").value !== "") {
+                    finalInfo += "本下载链接无MD限制\n";
+                    finalInfo += "[sell=" + postWindow.document.getElementById("sell").value + ",2]";
+                    finalInfo += postWindow.document.getElementById("download").value + "\n";
+                    finalInfo += "[/sell]";
+                } else {
+                    finalInfo += postWindow.document.getElementById("download").value;
+                }
+            }
+            var info = document.getElementById("textarea");
+            info.value = finalInfo;
+        }
+        function title_en_original_area_create(){
+            //外文原版分享区的标题生成
+            //获取Dom中id为atc_title的元素，即标题输入框
+            var title = document.getElementById("atc_title");
+            //为title赋值，格式为[国家][作者][漫画名称][卷数][网盘名称]
+            let finalTitle = "[" + postWindow.document.getElementById("country").value + "] " +
+                "[" + postWindow.document.getElementById("author").value + "] " +
+                "[" +postWindow.document.getElementById("book").value + "]" +
+                " [" + postWindow.document.getElementById("volume").value + "]" +
+                " [" +postWindow.document.getElementById("disk").value +"]";
+            title.value = finalTitle;
+        }
+        function info_cn_entity_area_create(){
             //中文实体区域的帖子生成
             //获取Dom中id为textarea的元素，即简介输入框
             let finalInfo = "";
@@ -274,7 +370,7 @@
         postWindow.document.body.appendChild(button);
         postWindow.document.body.appendChild(br);
     }
-    function GenerateURL(postWindow,labelString,inputId){
+    function GenerateMoelistURL(postWindow,labelString,inputId){
         var authorLabel = postWindow.document.createElement("label");
         authorLabel.innerHTML = labelString+"：";
         authorLabel.style.display = "inline-block";
