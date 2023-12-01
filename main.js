@@ -273,28 +273,45 @@
                 return;
         }
         function news_title_and_info_create(){
+            news_parse(function(result, error) {
+                if (result) {
+                    console.log('Final Result:', result);
+                    document.getElementById('atc_title').value=result.title;
+                    document.getElementById('textarea').value=result.content;
+                } else {
+                    console.error('Error:', error);
+                }
+            });
+        }
+        function news_parse(callback){
             //新闻一键解析发帖
             let newsUrl = postWindow.document.getElementById("newsUrl").value
-            let finalRes = GM_xmlhttpRequest({
+            GM_xmlhttpRequest({
                 method: "GET",
                 url: newsUrl,
-                onload:function (html){
-                    let parser = new DOMParser()
-                    let doc = parser.parseFromString(html.response, 'text/html')
-                    let elements = doc.querySelectorAll('*')
+                onload: function (html) {
+                    let parser = new DOMParser();
+                    let doc = parser.parseFromString(html.response, 'text/html');
+                    let elements = doc.querySelectorAll('*');
                     let webSite;
-                    webSiteList.forEach(item=>{
-                        if(newsUrl.includes(item.code)){
-                            webSite = item
+
+                    webSiteList.forEach(item => {
+                        if (newsUrl.includes(item.code)) {
+                            webSite = item;
                         }
-                    })
-                    if(webSite.parseType === 0){
-                        //传统php网站的处理方式
-                        return traditionHandle(elements,webSite)
+                    });
+
+                    if (webSite && webSite.parseType === 0) {
+                        // 传统php网站的处理方式
+                        callback(traditionHandle(elements, webSite));
+                    } else {
+                        callback(null, "Unsupported website or parse type");
                     }
+                },
+                onerror: function (error) {
+                    callback(null, error);
                 }
-            })
-            console.log('finalRes:::',finalRes)
+            });
         }
 
         function traditionHandle(elements,webSite) {
