@@ -11,6 +11,9 @@
 // @match        https://moeshare.cc/post.php?fid=42
 // @match        https://moeshare.cc/post.php?fid=43
 // @match        https://moeshare.cc/post.php?fid=3
+// @match        https://moeshare.cc/post.php?fid=17
+
+
 // @match        https://www.moeshare.cc/post.php?fid=22
 // @match        https://www.moeshare.cc/post.php?fid=33
 // @match        https://www.moeshare.cc/post.php?fid=28
@@ -18,16 +21,132 @@
 // @match        https://www.moeshare.cc/post.php?fid=42
 // @match        https://www.moeshare.cc/post.php?fid=43
 // @match        https://www.moeshare.cc/post.php?fid=3
+// @match        https://www.moeshare.cc/post.php?fid=17
+
 // @icon         https://www.google.com/s2/favicons?domain=tampermonkey.net
 // @license MIT
 // @downloadURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.user.js
 // @updateURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.meta.js
+// @grant       GM_xmlhttpRequest
+// @grant       GM_download
 // ==/UserScript==
 
 (function() {
     'use strict';
     var attribute = [{key:1,label:'首发'},{key:2,label:'补档'}]
     var enAttribute = [{key:1,label:'首发'},{key:2,label:'补档'},{key:3,label:'二次分流'}]
+    var webSiteList = [{
+        "id": "0",
+        "code": "hotacg",
+        "name": "热点ACG",
+        "parseType": 0,
+        "titleSelector": "entry-title",
+        "dateSelector": "entry-date",
+        "contentSelector": "entry-content",
+        "dateFormats": "yyyyMMd HH:mm,yyyyMdd HH:mm,yyyyMd HH:mm",
+        "maxResults": 7,
+        "baseUrl": null
+    }, {
+        "id": "1",
+        "code": "3dmgame",
+        "name": "三大妈",
+        "parseType": 0,
+        "titleSelector": "bt",
+        "dateSelector": "time",
+        "contentSelector": "news_warp_center",
+        "dateFormats": null,
+        "maxResults": 6,
+        "baseUrl": null
+    }, {
+        "id": "2",
+        "code": "vgtime",
+        "name": "游戏时光",
+        "parseType": 0,
+        "titleSelector": "art_tit",
+        "dateSelector": "time_box",
+        "contentSelector": "topicContent front_content",
+        "dateFormats": null,
+        "maxResults": 13,
+        "baseUrl": null
+    }, {
+        "id": "3",
+        "code": "ali213",
+        "name": "游侠资讯",
+        "parseType": 0,
+        "titleSelector": "newstit",
+        "dateSelector": "newstag_l",
+        "contentSelector": "n_show box-shadow",
+        "dateFormats": null,
+        "maxResults": 15,
+        "baseUrl": null
+    }, {
+        "id": "4",
+        "code": "dmzj",
+        "name": "动漫之家",
+        "parseType": 0,
+        "titleSelector": "news_content_head li_img_de autoHeight",
+        "dateSelector": "data_time",
+        "contentSelector": "news_content_con",
+        "dateFormats": null,
+        "maxResults": 8,
+        "baseUrl": null
+    }, {
+        "id": "5",
+        "code": "sohu",
+        "name": "搜狐",
+        "parseType": 0,
+        "titleSelector": "article-title",
+        "dateSelector": "time-source",
+        "contentSelector": "article",
+        "dateFormats": null,
+        "maxResults": 10,
+        "baseUrl": null
+    }, {
+        "id": "6",
+        "code": "gamersky",
+        "name": "游民星空",
+        "parseType": 0,
+        "titleSelector": "Mid2L_tit",
+        "dateSelector": "detail",
+        "contentSelector": "Mid2L_con",
+        "dateFormats": null,
+        "maxResults": 10,
+        "baseUrl": null
+    }, {
+        "id": "7",
+        "code": "gcores",
+        "name": "机核网",
+        "parseType": 1,
+        "titleSelector": "originalPage_title",
+        "dateSelector": "me-2 u_color-gray-info",
+        "contentSelector": "DraftEditor-editorContainer",
+        "dateFormats": null,
+        "maxResults": 0,
+        "baseUrl": "https://www.gcores.com/gapi/v1/articles/"
+    }, {
+        "id": "8",
+        "code": "a9vg",
+        "name": "A9VG网",
+        "parseType": 2,
+        "titleSelector": "z",
+        "dateSelector": "authi",
+        "contentSelector": "t_f",
+        "dateFormats": null,
+        "maxResults": 0,
+        "baseUrl": null
+    }, {
+        "id": "99",
+        "code": "gao7",
+        "name": "搞趣网",
+        "parseType": "0",
+        "titleSelector": "article-title",
+        "dateSelector": "article-meta",
+        "contentSelector": "area-gao7-article",
+        "dateFormats": null,
+        "maxResults": 4,
+        "baseUrl": null
+    }]
+
     // 创建一个按钮
     var newButton = document.createElement("i");
     newButton.innerHTML = "发帖模板";
@@ -142,10 +261,81 @@
                 //生成简介按钮区**********
                 GenerateButton(postWindow,"生成帖子",info_en_original_area_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
                 break;
+            case "17":
+                //在窗口中添加一个ACG文章转载评论区
+                postWindow.document.title = "ACG文章转载评论区";
+                GenerateInput(postWindow,"新闻地址","newsUrl","请输入新闻地址");
+                //添加一个按钮，一键解析生成标题和帖子
+                GenerateButton(postWindow,"一键解析",news_title_and_info_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                break;
             default:
                 alert("请在萌享论坛资源区使用本脚本");
                 return;
         }
+        function news_title_and_info_create(){
+            //新闻一键解析发帖
+            let newsUrl = postWindow.document.getElementById("newsUrl").value
+            let finalRes = GM_xmlhttpRequest({
+                method: "GET",
+                url: newsUrl,
+                onload:function (html){
+                    let parser = new DOMParser()
+                    let doc = parser.parseFromString(html.response, 'text/html')
+                    let elements = doc.querySelectorAll('*')
+                    let webSite;
+                    webSiteList.forEach(item=>{
+                        if(newsUrl.includes(item.code)){
+                            webSite = item
+                        }
+                    })
+                    if(webSite.parseType === 0){
+                        //传统php网站的处理方式
+                        return traditionHandle(elements,webSite)
+                    }
+                }
+            })
+            console.log('finalRes:::',finalRes)
+        }
+
+        function traditionHandle(elements,webSite) {
+            //首先遍历所有的element，找到contentSelector对应的element
+            let contentElement = null
+            let date = null
+            let firstDate = true;
+            let title = null
+            elements.forEach(function (element) {
+                if (element.className === (webSite.contentSelector)) {
+                    contentElement = element
+                }
+                if (element.className === (webSite.dateSelector) && firstDate) {
+                    date = dateTimeHandle(element.innerText, webSite)
+                    firstDate = false
+                }
+                if (element.className === (webSite.titleSelector)) {
+                    title = getTitle(element, webSite)
+                }
+            });
+            //处理contentElement,先转换成字符
+            contentElement = contentElement.outerHTML
+            //首先在content的开头添加url，作为文章的来源
+            contentElement = "[b]文章来源：[/b]" + url + "\n" + contentElement
+            //使用正则 <(?!p|img|/p|/img).*?> 替换掉contentElement
+            contentElement = contentElement.replace(/<(?!p|img|\/p|\/img).*?>/g, "")
+            //使用正则 <img.*?src="(.*?)".*?> 替换成 [img]$1[/img]
+            contentElement = contentElement.replace(/<img.*?src="(.*?)".*?>/g, "[img]$1[/img]")
+            //使用正则 <.*?> 替换成 ""
+            contentElement = contentElement.replace(/<.*?>/g, "")
+            //判断website是否是ali213，如果是的话需要进行额外处理，去除掉其中var之后的内容
+            if (webSite.code === "ali213") {
+                contentElement = contentElement.replace(/var.*?;/g, "")
+            }
+            let jsonRes = {
+                "title": date + title,
+                "content": contentElement
+            }
+            return jsonRes
+        }
+
         function info_en_original_area_create(){
             //外文原版分享区的帖子生成
             //获取Dom中id为textarea的元素，即简介输入框
@@ -416,5 +606,80 @@
         textarea.style.verticalAlign = "middle";
         postWindow.document.body.appendChild(textarea);
         postWindow.document.body.appendChild(postWindow.document.createElement("br"));
+    }
+    function dateTimeHandle(dateStr, website) {
+        let date = null
+        switch (website.code) {
+            case "3dmgame":
+                //把“时间：2023-07-04 16:02:46” 格式化为yyMMdd 类似于230704
+                date = dateStr.replace(/时间：(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}).*/, "$1$2$3");
+                //去除date最前面的两位
+                date = date.substring(2)
+                date = "[" + date + "]"
+                break;
+            case "gcores":
+                //把时间2023-07-05T09:28:29.000+08:00格式化为yyMMdd 类似于230705
+                date = dateStr.replace(/(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2}).*/, "$1$2$3");
+                date = date.substring(2)
+                date = "[" + date + "]"
+                break
+            case "dmzj":
+                //把时间"2023-07-05 11:42:00"格式化为yyMMdd 类似于230705的形式
+                date = dateStr.replace(/(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}).*/, "$1$2$3");
+                date = date.substring(2)
+                date = "[" + date + "]"
+                break
+            case "gao7":
+                //获取dateStr中类似于“2023年07月05日”的内容，提取出来然后格式化为yyMMdd 类似于230705的形式
+                date = dateStr.match(/(\d{4})年(\d{2})月(\d{2})日/)[0].replace(/(\d{4})年(\d{2})月(\d{2})日/, "$1$2$3")
+                date = date.substring(2)
+                date = "[" + date + "]"
+                break
+            case "hotacg":
+                //把时间 “			2023年7月5日 8:31		” 中的年月日提取出来
+                var year = dateStr.match(/(\d{4})年/)[0].replace(/(\d{4})年/, "$1")
+                var month = dateStr.match(/年(\d{1,2})月/)[0].replace(/年(\d{1,2})月/, "$1")
+                var day = dateStr.match(/月(\d{1,2})日/)[0].replace(/月(\d{1,2})日/, "$1")
+                //对month和day进行补0操作
+                if (month.length === 1) {
+                    month = "0" + month
+                }
+                if (day.length === 1) {
+                    day = "0" + day
+                }
+                //把year month day拼接起来
+                date = year + month + day
+                date = date.substring(2)
+                date = "[" + date + "]"
+                break
+            case "vgtime":
+                //把时间 “2023-07-05 13:05:08 ” 格式化为yyMMdd 类似于230705的形式
+                date = dateStr.replace(/(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}).*/, "$1$2$3");
+                date = date.substring(2)
+                date = "[" + date + "]"
+                break
+            case "ali213":
+                //处理类似于" 2023-07-05 12:12:31    游侠原创：Cloud    编辑：cloud    浏览量：加载中... "的字符串，提取出时间
+                date = dateStr.match(/(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}).*/)[0].replace(/(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}).*/, "$1$2$3");
+                date = date.substring(2)
+                date = "[" + date + "]"
+                break
+            default:
+                date = "errorDate"
+        }
+        return date
+    }
+
+    function getTitle(titleElement,webSite){
+        let title = null
+        switch (webSite.code) {
+            case "dmzj":
+                //获取titleElement中的<h1>的innerText
+                title = titleElement.querySelector("h1").innerText
+                break;
+            default:
+                title = titleElement.innerText
+        }
+        return title
     }
 })();
