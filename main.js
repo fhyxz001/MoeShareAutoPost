@@ -112,29 +112,8 @@
         "dateFormats": null,
         "maxResults": 10,
         "baseUrl": null
-    }, {
-        "id": "7",
-        "code": "gcores",
-        "name": "机核网",
-        "parseType": 1,
-        "titleSelector": "originalPage_title",
-        "dateSelector": "me-2 u_color-gray-info",
-        "contentSelector": "DraftEditor-editorContainer",
-        "dateFormats": null,
-        "maxResults": 0,
-        "baseUrl": "https://www.gcores.com/gapi/v1/articles/"
-    }, {
-        "id": "8",
-        "code": "a9vg",
-        "name": "A9VG网",
-        "parseType": 2,
-        "titleSelector": "z",
-        "dateSelector": "authi",
-        "contentSelector": "t_f",
-        "dateFormats": null,
-        "maxResults": 0,
-        "baseUrl": null
-    }, {
+    },
+     {
         "id": "99",
         "code": "gao7",
         "name": "搞趣网",
@@ -264,6 +243,12 @@
             case "17":
                 //在窗口中添加一个ACG文章转载评论区
                 postWindow.document.title = "ACG文章转载评论区";
+                GenerateLink(postWindow,"热点ACG","https://www.hotacg.com/");
+                GenerateLink(postWindow,"三大妈","https://www.3dmgame.com/");
+                GenerateLink(postWindow,"游戏时光","https://www.vgtime.com/");
+                GenerateLink(postWindow,"游侠网","https://www.ali213.net/");
+                GenerateLink(postWindow,"动漫之家","https://news.idmzj.com/");
+                postWindow.document.body.appendChild(postWindow.document.createElement("br"));
                 GenerateInput(postWindow,"新闻地址","newsUrl","请输入新闻地址");
                 //添加一个按钮，一键解析生成标题和帖子
                 GenerateButton(postWindow,"一键解析",news_title_and_info_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
@@ -545,6 +530,21 @@
             title.value = finalTitle;
         }
     }
+    function GenerateLink(postWindow,labelString,link){
+        var authorLabel = postWindow.document.createElement("label");
+        authorLabel.innerHTML = labelString+"：";
+        authorLabel.style.display = "inline-block";
+        authorLabel.style.width = "20%";
+        authorLabel.style.textAlign = "left";
+        postWindow.document.body.appendChild(authorLabel);
+        var a = postWindow.document.createElement("a");
+        a.href = link;
+        a.target = "_blank";
+        a.innerHTML = link;
+        postWindow.document.body.appendChild(a);
+        postWindow.document.body.appendChild(postWindow.document.createElement("br"));
+    }
+
     function GenerateSwitch(postWindow,labelString,switchId,attribute,selectValue){
         var switchLabel = postWindow.document.createElement("label");
         switchLabel.innerHTML = labelString+"：";
