@@ -33,7 +33,7 @@
 
 (function() {
     'use strict';
-    var attribute = [{key:1,label:'首发'},{key:2,label:'补档'}]
+    var attribute = [{key:1,label:'首发'},{key:2,label:'补档'},{key:3,label:'二次分流'}]
     var enAttribute = [{key:1,label:'首发'},{key:2,label:'补档'},{key:3,label:'二次分流'}]
     var webSiteList = [{
         "id": "0",
@@ -190,14 +190,14 @@
                 //简介区输入框
                 GenerateTextArea(postWindow,"简介","info","请在此输入简介内容","200px","80%");
                 //单卷信息输入框
-                GenerateMoelistURL(postWindow,"moelist","moelistURL");
-                GenerateTextArea(postWindow,"单卷信息","moelist","请在此输入单卷信息","200px","80%");
+                GenerateMoelistURL(postWindow,"Moelist","MoelistURL");
+                GenerateTextArea(postWindow,"单卷信息","Moelist","请在此处粘贴从Moelist输出的单卷信息","200px","80%");
                 //属性区输入框
                 var selectValue = attribute[0].key;
                 GenerateSwitch(postWindow,"资源属性","attribute",attribute,selectValue);
-                GenerateInput(postWindow,"失效链接","certification","请输入失效链接，可选项，影响评分");
-                //注释输入框
-                GenerateTextArea(postWindow,"注释","note","格式：ID+moeshare，可选项，影响评分","50px","80%");
+                GenerateInput(postWindow,"失效链接","invalid","请输入失效链接，可选项，影响评分");
+                //其它信息输入框
+                GenerateTextArea(postWindow,"其它信息","note","压缩包注释、扫者留言等其它说明可在此处填写","50px","80%");
                 // 出售区输入框
                 GenerateInput(postWindow,"售价(国库券)","sell","例如：0，代表帖子售价为0国库券");
                 // MD可见区输入框
@@ -222,15 +222,15 @@
                 //简介区输入框
                 GenerateTextArea(postWindow,"简介","info","请在此输入简介内容","200px","80%");
                 //单卷信息输入框
-                GenerateMoelistURL(postWindow,"moelist","moelistURL");
-                GenerateTextArea(postWindow,"单卷信息","moelist","请在此输入单卷信息","200px","80%");
+                GenerateMoelistURL(postWindow,"Moelist","MoelistURL");
+                GenerateTextArea(postWindow,"单卷信息","Moelist","请在此处粘贴从Moelist输出的单卷信息","200px","80%");
                 //属性区输入框
                 var enSelectValue = enAttribute[0].key;
                 GenerateSwitch(postWindow,"资源属性","attribute",enAttribute,enSelectValue);
                 //失效链接输入框
-                GenerateInput(postWindow,"失效链接","certification","请输入失效链接，可选项，影响评分");
-                //注释输入框
-                GenerateTextArea(postWindow,"注释","note","格式：ID+moeshare，可选项，影响评分","50px","80%");
+                GenerateInput(postWindow,"失效链接","invalid","请输入失效链接，可选项，影响评分");
+                //其它信息输入框
+                GenerateTextArea(postWindow,"其它信息","note","压缩包注释、扫者留言等其它说明可在此处填写","50px","80%");
                 // 出售区输入框
                 GenerateInput(postWindow,"售价(国库券)","sell","例如：0，代表帖子售价为0国库券");
                 // MD可见区输入框
@@ -348,20 +348,21 @@
             if(postWindow.document.getElementById("attribute").value !==""){
                 var attributeKey =postWindow.document.getElementById("attribute").value
                 if(attributeKey == 1) {
-                    finalInfo += "[quote]【资源属性】\n【首發】[/quote]\n";
+                    finalInfo += "[quote]【资源属性】【首发】";
                 }else if(attributeKey == 2){
-                    finalInfo += "[quote]【资源属性】\n【補檔】 下附失效链接[/quote]\n";
+                    finalInfo += "[quote]【资源属性】【补档】";
                 }else {
-                    finalInfo += "[quote]【资源属性】\n【二次分流】[/quote]\n";
+                    finalInfo += "[quote]【资源属性】【二次分流】";
                 }
-            }
-            if(postWindow.document.getElementById("certification").value !==""){
-                finalInfo+="[quote]【失效链接】\n"+postWindow.document.getElementById("certification").value+"[/quote]\n";
+				if(postWindow.document.getElementById("invalid").value !==""){
+                finalInfo+="\n【失效链接】[url="+postWindow.document.getElementById("invalid").value+
+				"]"+postWindow.document.getElementById("invalid").value+"[/url][/quote]\n";
+				}else {finalInfo+= "[/quote]\n";}
             }
             if(postWindow.document.getElementById("note").value !==""){
-                finalInfo+="[quote]【注释信息】\n已添加注释："+postWindow.document.getElementById("note").value+"[/quote]\n";
+                finalInfo+="[quote]"+postWindow.document.getElementById("note").value+"[/quote]\n";
             }
-            finalInfo+="[quote]【单卷信息】\n"+postWindow.document.getElementById("moelist").value+"[/quote]\n";
+            finalInfo+="[quote]【单卷信息】\n"+postWindow.document.getElementById("Moelist").value+"[/quote]\n";
             if(postWindow.document.getElementById("md").value !=="") {
                 finalInfo += "本下载链接需要" + postWindow.document.getElementById("md").value + "MD才能查看" + "\n";
                 if (postWindow.document.getElementById("sell").value !== "") {
@@ -426,18 +427,21 @@
             if(postWindow.document.getElementById("attribute").value !==""){
                 var attributeKey =postWindow.document.getElementById("attribute").value
                 if(attributeKey == 1) {
-                    finalInfo += "[quote]【资源属性】\n【首發】[/quote]\n";
+                    finalInfo += "[quote]【资源属性】【首发】";
+                }else if(attributeKey == 2) {
+                    finalInfo += "[quote]【资源属性】【补档】";
                 }else {
-                    finalInfo += "[quote]【资源属性】\n【補檔】 下附失效链接[/quote]\n";
+                    finalInfo += "[quote]【资源属性】【二次分流】";
                 }
-            }
-            if(postWindow.document.getElementById("certification").value !==""){
-                finalInfo+="[quote]【失效链接】\n"+postWindow.document.getElementById("certification").value+"[/quote]\n";
+				if(postWindow.document.getElementById("invalid").value !==""){
+                finalInfo+="\n【失效链接】[url="+postWindow.document.getElementById("invalid").value+
+				"]"+postWindow.document.getElementById("invalid").value+"[/url][/quote]\n";
+				}else {finalInfo+= "[/quote]\n";}
             }
             if(postWindow.document.getElementById("note").value !==""){
-                finalInfo+="[quote]【注释信息】\n已添加注释："+postWindow.document.getElementById("note").value+"[/quote]\n";
+                finalInfo+="[quote]"+postWindow.document.getElementById("note").value+"[/quote]\n";
             }
-            finalInfo+="[quote]【单卷信息】\n"+postWindow.document.getElementById("moelist").value+"[/quote]\n";
+            finalInfo+="[quote]【单卷信息】\n"+postWindow.document.getElementById("Moelist").value+"[/quote]\n";
             if(postWindow.document.getElementById("md").value !==""){
                 finalInfo += "本下载链接需要"+postWindow.document.getElementById("md").value+"MD才能查看"+"\n";
                 if(postWindow.document.getElementById("sell").value !==""){
@@ -588,7 +592,7 @@
         a.id = inputId;
         a.href = "https://toolbox-8hz.pages.dev/moelist";
         a.target = "_blank";
-        a.innerHTML = "点击跳转到moelist页面（需要科学上网）";
+        a.innerHTML = "点击跳转到Moelist页面（需要科学上网）";
         postWindow.document.body.appendChild(a);
         postWindow.document.body.appendChild(postWindow.document.createElement("br"));
     }
@@ -676,7 +680,7 @@
                 date = "[" + date + "]"
                 break
             case "ali213":
-                //处理类似于" 2023-07-05 12:12:31    游侠原创：Cloud    编辑：cloud    浏览量：加载中... "的字符串，提取出时间
+                //处理类似于" 2023-07-05 12:12:31    游侠原创：Cloud    编辑：cloud    浏览量：加载中... "的字符串，提取出时间
                 date = dateStr.match(/(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}).*/)[0].replace(/(\d{4})-(\d{2})-(\d{2})\s(\d{2}):(\d{2}).*/, "$1$2$3");
                 date = date.substring(2)
                 date = "[" + date + "]"
