@@ -241,7 +241,6 @@
                 postWindow.document.title = "答题模板";
                 GenerateInput(postWindow,"题目数量","questionNum","请输入题目数量");
                 GenerateButton(postWindow,"生成答题框",answerListCreate,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
-                GenerateButton(postWindow,"生成帖子",answerTotalCreate,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
                 return;
         }
         function answerTotalCreate(){
@@ -263,6 +262,7 @@
             for (let index = 1; index <= questionNum; index++) {
                 GenerateInput(postWindow,"第"+index+"题","question"+index,"请输入第"+index+"题的答案");
             }
+            GenerateButton(postWindow,"生成帖子",answerTotalCreate,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
         }
         function Bangumi(){
             //自动刮削功能
