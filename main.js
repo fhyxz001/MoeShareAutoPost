@@ -13,6 +13,7 @@
 // @match        https://moeshare.cc/post.php?fid=3
 // @match        https://moeshare.cc/post.php?fid=17
 // @match        https://moeshare.cc/post.php?action=reply&fid=16&tid=*
+// @match        https://moeshare.cc/post.php?fid=16&action=reply&tid=*
 
 
 // @match        https://www.moeshare.cc/post.php?fid=22
@@ -24,6 +25,7 @@
 // @match        https://www.moeshare.cc/post.php?fid=3
 // @match        https://www.moeshare.cc/post.php?fid=17
 // @match        https://www.moeshare.cc/post.php?action=reply&fid=16&tid=*
+// @match        https://www.moeshare.cc/post.php?fid=16&action=reply&tid=*
 
 // @icon         https://www.google.com/s2/favicons?domain=tampermonkey.net
 // @license MIT
@@ -249,7 +251,12 @@
             let finalInfo = "";
             finalInfo+="[hide=999,credit][list][li] \n"
             for (let index = 1; index <= questionNum; index++) {
-                let question = postWindow.document.getElementById("question"+index).value;
+                var boxtext = "";
+                for (var i = 0; i < 4; i++) {
+                    var checkboxN = postWindow.document.getElementById("question"+index+"check"+i);
+                    if (checkboxN.checked) {boxtext += String.fromCharCode(65 + i);}
+                }
+                let question = boxtext + " + " + postWindow.document.getElementById("question"+index).value;
                 finalInfo += index+"."+question+"\n";
             }
             finalInfo+="[/li][/list][/hide]";
@@ -260,7 +267,7 @@
             //首先获得questionNum的值,并转换成int类型
             let questionNum = parseInt(postWindow.document.getElementById("questionNum").value);
             for (let index = 1; index <= questionNum; index++) {
-                GenerateInput(postWindow,"第"+index+"题","question"+index,"请输入第"+index+"题的答案");
+                GenerateAnsTmpl(postWindow,"第"+index+"题","question"+index,"请在此输入第"+index+"题答案选项所对应的文字内容");
             }
             GenerateButton(postWindow,"生成帖子",answerTotalCreate,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
         }
@@ -646,6 +653,33 @@
         input.id = inputId;
         input.placeholder = placeholderString;
         postWindow.document.body.appendChild(input);
+        postWindow.document.body.appendChild(postWindow.document.createElement("br"));
+    }
+    function GenerateAnsTmpl(postWindow,labelString,inputId,placeholderString){
+        var authorLabel = postWindow.document.createElement("label");
+        authorLabel.innerHTML = labelString+"：";
+        authorLabel.style.display = "inline-block";
+        authorLabel.style.width = "20%";
+        authorLabel.style.textAlign = "left";
+        postWindow.document.body.appendChild(authorLabel);
+	for (var i = 0; i < 4; i++) {
+            var checkbox = postWindow.document.createElement('input')
+	    checkbox.type = "checkbox";
+	    checkbox.id = inputId + "check" + i;
+            checkbox.value = String.fromCharCode(65 + i);
+            var boxlabel = postWindow.document.createElement('label');
+            boxlabel.htmlFor = 'checkbox' + i;
+            boxlabel.appendChild(postWindow.document.createTextNode('\u00A0\u00A0' + String.fromCharCode(65 + i)));
+            postWindow.document.body.appendChild(boxlabel);
+            postWindow.document.body.appendChild(checkbox);
+	}
+        var input = postWindow.document.createElement("input");
+        input.type = "text";
+        input.style.width = "100%";
+        input.id = inputId;
+        input.placeholder = placeholderString;
+        postWindow.document.body.appendChild(input);
+        postWindow.document.body.appendChild(postWindow.document.createElement("br"));
         postWindow.document.body.appendChild(postWindow.document.createElement("br"));
     }
     function GenerateTextArea(postWindow,labelString,textareaId,placeholderString,height,width){
