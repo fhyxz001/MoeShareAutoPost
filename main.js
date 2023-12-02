@@ -150,6 +150,8 @@
                 //在窗口中添加一个中文电子分流区发帖模板标题
                 postWindow.document.title = "中文电子分流区发帖模板";
                 //标题输入框
+                GenerateInput(postWindow,"Bangumi","BangumiURL","输入Bangumi地址，可选项。填入后支持自动刮削");
+                GenerateButton(postWindow,"自动刮削",Bangumi,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
                 GenerateInput(postWindow,"作者","author","请输入作者名称");
                 GenerateInput(postWindow,"漫画书名","book","请输入漫画名称");
                 GenerateInput(postWindow,"卷数","volume","例如：1-7未、1-7完、单7未、单7完");
@@ -162,7 +164,7 @@
                 // 封面区输入框
                 GenerateInput(postWindow,"封面","cover","请输入封面文件的图床链接");
                 // 简介区输入框
-                GenerateTextArea(postWindow,"简介","info","请在此输入简介内容","200px","80%");
+                GenerateTextArea(postWindow,"简介","info","请在此输入简介内容","100px","80%");
                 // 出售区输入框
                 GenerateInput(postWindow,"售价(国库券)","sell","例如：0，代表帖子售价为0国库券");
                 // MD可见区输入框
@@ -176,6 +178,8 @@
             case "4":case "42":case "43":
                 //在窗口中添加一个中文实体分流区发帖模板标题
                 postWindow.document.title = "中文实体分流区发帖模板";
+                GenerateInput(postWindow,"Bangumi","BangumiURL","输入Bangumi地址，可选项。填入后支持自动刮削");
+                GenerateButton(postWindow,"自动刮削",Bangumi,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
                 GenerateInput(postWindow,"作者","author","请输入作者名称");
                 GenerateInput(postWindow,"漫画书名","book","请输入漫画名称");
                 GenerateInput(postWindow,"卷数","volume","例如：1-7未、1-7完、单7未、单7完");
@@ -188,14 +192,14 @@
                 //封面区输入框
                 GenerateInput(postWindow,"封面","cover","请输入封面文件的图床链接");
                 //简介区输入框
-                GenerateTextArea(postWindow,"简介","info","请在此输入简介内容","200px","80%");
+                GenerateTextArea(postWindow,"简介","info","请在此输入简介内容","100px","80%");
                 //单卷信息输入框
                 GenerateMoelistURL(postWindow,"Moelist","MoelistURL");
-                GenerateTextArea(postWindow,"单卷信息","Moelist","请在此处粘贴从Moelist输出的单卷信息","200px","80%");
+                GenerateTextArea(postWindow,"单卷信息","Moelist","请在此处粘贴从Moelist输出的单卷信息","100px","80%");
                 //属性区输入框
                 var selectValue = attribute[0].key;
                 GenerateSwitch(postWindow,"资源属性","attribute",attribute,selectValue);
-                GenerateInput(postWindow,"失效链接","invalid","请输入失效链接，可选项，影响评分");
+                GenerateTextArea(postWindow,"失效链接","invalid","请输入失效链接，可选项，影响评分","50px","80%");
                 //其它信息输入框
                 GenerateTextArea(postWindow,"其它信息","note","压缩包注释、扫者留言等其它说明可在此处填写","50px","80%");
                 // 出售区输入框
@@ -210,6 +214,8 @@
             case "3":
                 //在窗口中添加一个外文原版分享区发帖模板标题
                 postWindow.document.title = "外文原版分享区发帖模板";
+                GenerateInput(postWindow,"Bangumi","BangumiURL","输入Bangumi地址，可选项。填入后支持自动刮削");
+                GenerateButton(postWindow,"自动刮削",Bangumi,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
                 GenerateInput(postWindow,"国家","country","例如：日本");
                 GenerateInput(postWindow,"作者","author","请输入作者名称");
                 GenerateInput(postWindow,"漫画书名","book","请输入漫画名称");
@@ -220,10 +226,10 @@
                 //封面区输入框
                 GenerateInput(postWindow,"封面","cover","请输入封面文件的图床链接");
                 //简介区输入框
-                GenerateTextArea(postWindow,"简介","info","请在此输入简介内容","200px","80%");
+                GenerateTextArea(postWindow,"简介","info","请在此输入简介内容","100px","80%");
                 //单卷信息输入框
                 GenerateMoelistURL(postWindow,"Moelist","MoelistURL");
-                GenerateTextArea(postWindow,"单卷信息","Moelist","请在此处粘贴从Moelist输出的单卷信息","200px","80%");
+                GenerateTextArea(postWindow,"单卷信息","Moelist","请在此处粘贴从Moelist输出的单卷信息","100px","80%");
                 //属性区输入框
                 var enSelectValue = enAttribute[0].key;
                 GenerateSwitch(postWindow,"资源属性","attribute",enAttribute,enSelectValue);
@@ -256,6 +262,36 @@
             default:
                 alert("请在萌享论坛资源区使用本脚本");
                 return;
+        }
+        function Bangumi(){
+            //自动刮削功能
+            let BangumiURL = postWindow.document.getElementById("BangumiURL").value
+            GM_xmlhttpRequest({
+                method: "GET",
+                url: BangumiURL,
+                onload: function (html) {
+                    if(html.status==200){
+                        let response = html.response;
+                        var parser = new DOMParser();
+                        var doc = parser.parseFromString(response, "text/html");
+                        //提取数据
+                        var chineseName = doc.querySelector('#infobox li:nth-child(1)').textContent.trim().replace('中文名: ', '');
+                        var author = doc.querySelector('#infobox li:nth-child(4) a').textContent.trim();
+                        var infotext = doc.querySelector('#subject_summary').textContent.trim();
+                        // 获取id为bangumiInfo的div元素
+                        var bangumiInfoDiv = doc.getElementById('bangumiInfo');
+                        // 在bangumiInfoDiv内部查找第一个<a>标签
+                        var firstAnchorTag = bangumiInfoDiv.querySelector('a');
+                        // 获取<a>标签的href属性
+                        var cover = firstAnchorTag.getAttribute('href');
+                        //赋值数据
+                        postWindow.document.getElementById("author").value = author;
+                        postWindow.document.getElementById("book").value = chineseName;
+                        postWindow.document.getElementById("info").value = infotext;
+                        postWindow.document.getElementById("cover").value = 'http:'+cover;
+                    }
+                },
+            })
         }
         function news_title_and_info_create(){
             news_parse(function(result, error) {
