@@ -269,6 +269,8 @@
             for (let index = 1; index <= questionNum; index++) {
                 GenerateAnsTmpl(postWindow,"第"+index+"题","question"+index,"请在此输入第"+index+"题答案选项所对应的文字内容");
             }
+	    postWindow.document.body.removeChild(postWindow.document.querySelectorAll('button')[0]);
+            postWindow.document.querySelectorAll('input')[0].style.display = "none";
             GenerateButton(postWindow,"生成帖子",answerTotalCreate,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
         }
         function Bangumi(){
