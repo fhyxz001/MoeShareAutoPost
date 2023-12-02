@@ -12,6 +12,7 @@
 // @match        https://moeshare.cc/post.php?fid=43
 // @match        https://moeshare.cc/post.php?fid=3
 // @match        https://moeshare.cc/post.php?fid=17
+// @match        https://moeshare.cc/post.php?action=reply&fid=16&tid=*
 
 
 // @match        https://www.moeshare.cc/post.php?fid=22
@@ -22,6 +23,7 @@
 // @match        https://www.moeshare.cc/post.php?fid=43
 // @match        https://www.moeshare.cc/post.php?fid=3
 // @match        https://www.moeshare.cc/post.php?fid=17
+// @match        https://www.moeshare.cc/post.php?action=reply&fid=16&tid=*
 
 // @icon         https://www.google.com/s2/favicons?domain=tampermonkey.net
 // @license MIT
@@ -100,7 +102,6 @@
         "maxResults": 8,
         "baseUrl": null
     }]
-
     // 创建一个按钮
     var newButton = document.createElement("i");
     newButton.innerHTML = "发帖模板";
@@ -119,6 +120,7 @@
         //获取当前页面的url，判断fid是多少，然后根据fid判断是哪个板块，不同模块有着不同的发贴模板
         var url = window.location.href;
         var fid = url.substring(url.indexOf("fid=")+4,url.length);
+        console.log(fid);
         //22,33,28属于电子分流区
         switch (fid) {
             case "22":case "28":case "33":
@@ -235,8 +237,32 @@
                 GenerateButton(postWindow,"一键解析",news_title_and_info_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
                 break;
             default:
-                alert("请在萌享论坛资源区使用本脚本");
+                //答题模板
+                postWindow.document.title = "答题模板";
+                GenerateInput(postWindow,"题目数量","questionNum","请输入题目数量");
+                GenerateButton(postWindow,"生成答题框",answerListCreate,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"生成帖子",answerTotalCreate,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
                 return;
+        }
+        function answerTotalCreate(){
+            //首先获得questionNum的值,并转换成int类型
+            let questionNum = parseInt(postWindow.document.getElementById("questionNum").value);
+            let finalInfo = "";
+            finalInfo+="[hide=999,credit][list][li] \n"
+            for (let index = 1; index <= questionNum; index++) {
+                let question = postWindow.document.getElementById("question"+index).value;
+                finalInfo += index+"."+question+"\n";
+            }
+            finalInfo+="[/li][/list][/hide]";
+            var info = document.getElementById("textarea");
+            info.value = finalInfo;
+        }
+        function answerListCreate(){
+            //首先获得questionNum的值,并转换成int类型
+            let questionNum = parseInt(postWindow.document.getElementById("questionNum").value);
+            for (let index = 1; index <= questionNum; index++) {
+                GenerateInput(postWindow,"第"+index+"题","question"+index,"请输入第"+index+"题的答案");
+            }
         }
         function Bangumi(){
             //自动刮削功能
