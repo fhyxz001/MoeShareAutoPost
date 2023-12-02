@@ -178,7 +178,7 @@
                 //属性区输入框
                 var selectValue = attribute[0].key;
                 GenerateSwitch(postWindow,"资源属性","attribute",attribute,selectValue);
-                GenerateTextArea(postWindow,"失效链接","invalid","请输入失效链接，可选项，影响评分","50px","80%");
+                GenerateTextArea(postWindow,"失效链接","invalid","请输入失效链接，可选项，影响评分，若有多个链接请在中间用空格隔开","50px","80%");
                 //其它信息输入框
                 GenerateTextArea(postWindow,"其它信息","note","压缩包注释、扫者留言等其它说明可在此处填写","50px","80%");
                 // 出售区输入框
@@ -479,11 +479,16 @@
                 }else {
                     finalInfo += "[quote]【资源属性】【二次分流】";
                 }
-				if(postWindow.document.getElementById("invalid").value !==""){
-                finalInfo+="\n【失效链接】[url="+postWindow.document.getElementById("invalid").value+
-				"]"+postWindow.document.getElementById("invalid").value+"[/url][/quote]\n";
-				}else {finalInfo+= "[/quote]\n";}
-            }
+	    if (postWindow.document.getElementById("invalid").value !== "") {
+		var links = postWindow.document.getElementById("invalid").value.split(" ");
+		finalInfo += "\n【失效链接】"
+		for (var i = 0; i < links.length; i++) {
+			finalInfo += "[url=" + links[i] + "]" + links[i] + "[/url] ；";
+			}
+		finalInfo += "[/quote]\n"
+	    } else {
+		finalInfo += "[/quote]\n";
+	    }
             if(postWindow.document.getElementById("note").value !==""){
                 finalInfo+="[quote]"+postWindow.document.getElementById("note").value+"[/quote]\n";
             }
