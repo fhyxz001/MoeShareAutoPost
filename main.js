@@ -489,6 +489,7 @@
 	    } else {
 		finalInfo += "[/quote]\n";
 	    }
+	    }
             if(postWindow.document.getElementById("note").value !==""){
                 finalInfo+="[quote]"+postWindow.document.getElementById("note").value+"[/quote]\n";
             }
