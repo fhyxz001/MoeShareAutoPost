@@ -29,6 +29,15 @@
 // @updateURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.meta.js
 // @grant       GM_xmlhttpRequest
 // @grant       GM_download
+// @contect https://bgm.tv/subject
+// @contect https://www.hotacg.com
+// @contect https://www.3dmgame.com
+// @contect https://www.3dmgame.com
+// @contect https://www.vgtime.com
+// @contect https://www.ali213.net
+// @contect https://news.idmzj.com
+
+
 // ==/UserScript==
 
 (function() {
@@ -89,40 +98,6 @@
         "contentSelector": "news_content_con",
         "dateFormats": null,
         "maxResults": 8,
-        "baseUrl": null
-    }, {
-        "id": "5",
-        "code": "sohu",
-        "name": "搜狐",
-        "parseType": 0,
-        "titleSelector": "article-title",
-        "dateSelector": "time-source",
-        "contentSelector": "article",
-        "dateFormats": null,
-        "maxResults": 10,
-        "baseUrl": null
-    }, {
-        "id": "6",
-        "code": "gamersky",
-        "name": "游民星空",
-        "parseType": 0,
-        "titleSelector": "Mid2L_tit",
-        "dateSelector": "detail",
-        "contentSelector": "Mid2L_con",
-        "dateFormats": null,
-        "maxResults": 10,
-        "baseUrl": null
-    },
-     {
-        "id": "99",
-        "code": "gao7",
-        "name": "搞趣网",
-        "parseType": "0",
-        "titleSelector": "article-title",
-        "dateSelector": "article-meta",
-        "contentSelector": "area-gao7-article",
-        "dateFormats": null,
-        "maxResults": 4,
         "baseUrl": null
     }]
 
