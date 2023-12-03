@@ -47,6 +47,8 @@
 
 (function() {
     'use strict';
+    var windcode = document.getElementById('wy_windcode');
+    if (windcode.checked != true){editorcode('windcode');}
     var attribute = [{key:1,label:'首发'},{key:2,label:'补档'},{key:3,label:'二次分流'}]
     var enAttribute = [{key:1,label:'首发'},{key:2,label:'补档'},{key:3,label:'二次分流'}]
     var webSiteList = [{
