@@ -244,7 +244,7 @@
             default:
                 //答题模板
                 postWindow.document.title = "答题模板";
-                GenerateInput(postWindow,"题目数量","questionNum","请输入题目数量");
+                GenerateInput(postWindow,"题目数量","questionNum","请一次性输入全部题目的数量");
                 GenerateButton(postWindow,"生成答题框",answerListCreate,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
                 return;
         }
