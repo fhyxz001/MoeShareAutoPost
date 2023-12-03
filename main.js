@@ -33,13 +33,14 @@
 // @updateURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.meta.js
 // @grant       GM_xmlhttpRequest
 // @grant       GM_download
-// @connect https://bgm.tv/subject
-// @connect https://www.hotacg.com
-// @connect https://www.3dmgame.com
-// @connect https://www.3dmgame.com
-// @connect https://www.vgtime.com
-// @connect https://www.ali213.net
-// @connect https://news.idmzj.com
+// @connect bgm.tv
+// @connect www.hotacg.com
+// @connect www.3dmgame.com
+// @connect www.3dmgame.com
+// @connect www.vgtime.com
+// @connect www.ali213.net
+// @connect news.idmzj.com
+// @connect *
 
 
 // ==/UserScript==
