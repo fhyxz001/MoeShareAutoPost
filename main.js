@@ -33,13 +33,13 @@
 // @updateURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.meta.js
 // @grant       GM_xmlhttpRequest
 // @grant       GM_download
-// @contect https://bgm.tv/subject
-// @contect https://www.hotacg.com
-// @contect https://www.3dmgame.com
-// @contect https://www.3dmgame.com
-// @contect https://www.vgtime.com
-// @contect https://www.ali213.net
-// @contect https://news.idmzj.com
+// @connect https://bgm.tv/subject
+// @connect https://www.hotacg.com
+// @connect https://www.3dmgame.com
+// @connect https://www.3dmgame.com
+// @connect https://www.vgtime.com
+// @connect https://www.ali213.net
+// @connect https://news.idmzj.com
 
 
 // ==/UserScript==
