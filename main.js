@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MoeShareAutoPost
 // @namespace    https://github.com/fhyxz001/MoeShareAutoPost
-// @version      0.2
+// @version      0.21
 // @description  萌享论坛资源区发贴格式化工具，用于帮助用户方便的进行资源发布
 // @author       hexbkyoma&DIBAO
 // @match        https://moeshare.cc/post.php?fid=22
