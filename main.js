@@ -51,18 +51,7 @@
     if (windcode.checked != true){editorcode('windcode');}
     var attribute = [{key:1,label:'首发'},{key:2,label:'补档'},{key:3,label:'二次分流'}]
     var enAttribute = [{key:1,label:'首发'},{key:2,label:'补档'},{key:3,label:'二次分流'}]
-    var webSiteList = [{
-        "id": "0",
-        "code": "hotacg",
-        "name": "热点ACG",
-        "parseType": 0,
-        "titleSelector": "entry-title",
-        "dateSelector": "entry-date",
-        "contentSelector": "entry-content",
-        "dateFormats": "yyyyMMd HH:mm,yyyyMdd HH:mm,yyyyMd HH:mm",
-        "maxResults": 7,
-        "baseUrl": null
-    }, {
+    var webSiteList = [ {
         "id": "1",
         "code": "3dmgame",
         "name": "三大妈",
@@ -337,7 +326,7 @@
 
                     if (webSite && webSite.parseType === 0) {
                         // 传统php网站的处理方式
-                        callback(traditionHandle(elements, webSite));
+                        callback(traditionHandle(elements, webSite,newsUrl));
                     } else {
                         callback(null, "Unsupported website or parse type");
                     }
@@ -348,7 +337,7 @@
             });
         }
 
-        function traditionHandle(elements,webSite) {
+        function traditionHandle(elements,webSite,newsUrl) {
             //首先遍历所有的element，找到contentSelector对应的element
             let contentElement = null
             let date = null
@@ -369,7 +358,7 @@
             //处理contentElement,先转换成字符
             contentElement = contentElement.outerHTML
             //首先在content的开头添加url，作为文章的来源
-            contentElement = "[b]文章来源：[/b]" + url + "\n" + contentElement
+            contentElement = "[b]文章来源：[/b]" + newsUrl + "\n" + contentElement
             //使用正则 <(?!p|img|/p|/img).*?> 替换掉contentElement
             contentElement = contentElement.replace(/<(?!p|img|\/p|\/img).*?>/g, "")
             //使用正则 <img.*?src="(.*?)".*?> 替换成 [img]$1[/img]
