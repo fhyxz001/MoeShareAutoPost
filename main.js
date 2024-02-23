@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         MoeShareAutoPost
 // @namespace    https://github.com/fhyxz001/MoeShareAutoPost
-// @version      0.21
+// @version      0.25
 // @description  萌享论坛资源区发贴格式化工具，用于帮助用户方便的进行资源发布
 // @author       hexbkyoma&DIBAO
 // @match        https://moeshare.cc/post.php?fid=22
@@ -29,11 +29,10 @@
 
 // @icon         https://www.google.com/s2/favicons?domain=tampermonkey.net
 // @license MIT
-// @downloadURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.user.js
-// @updateURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.meta.js
 // @grant       GM_xmlhttpRequest
 // @grant       GM_download
 // @connect bgm.tv
+// @connect bangumi.tv
 // @connect www.hotacg.com
 // @connect www.3dmgame.com
 // @connect www.3dmgame.com
@@ -43,6 +42,8 @@
 // @connect *
 
 
+// @downloadURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.user.js
+// @updateURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.meta.js
 // ==/UserScript==
 
 (function() {
@@ -276,10 +277,30 @@
                         let response = html.response;
                         var parser = new DOMParser();
                         var doc = parser.parseFromString(response, "text/html");
-                        //提取数据
-                        var chineseName = doc.querySelector('#infobox li:nth-child(1)').textContent.trim().replace('中文名: ', '');
-                        var author = doc.querySelector('#infobox li:nth-child(4) a').textContent.trim();
-                        var infotext = doc.querySelector('#subject_summary').textContent.trim();
+                        // 提取数据
+                        var chineseNameElement = doc.querySelector('#infobox li:nth-child(1)');
+                        var authorElement;
+                        // 逐个检查可能的选择器
+                        var i=1;
+                        for (i = 1; i <= 5; i++) {
+                            var selector = `#infobox li:nth-child(${i}) span`;
+                            // 检查选择器是否是纯数字
+                            if (/^\d+$/.test(selector)) {
+                                continue;
+                            }
+                            // 使用选择器查找元素
+                            authorElement = doc.querySelector(selector);
+                            // 如果找到包含有 "作者" 或者 "原作" 的元素，则跳出循环
+                            if (authorElement && (authorElement.textContent.includes('作者') || authorElement.textContent.includes('原作'))) {
+                                break;
+                            }
+                        }
+                        authorElement = doc.querySelector('#infobox li:nth-child('+i+') a');
+                        var infotextElement = doc.querySelector('#subject_summary');
+                        // 判空并提取数据
+                        var chineseName = chineseNameElement ? chineseNameElement.textContent.trim().replace('中文名: ', '') : '';
+                        var author = authorElement ? authorElement.textContent.trim() : '';
+                        var infotext = infotextElement ? infotextElement.textContent.trim() : '';
                         // 获取id为bangumiInfo的div元素
                         var bangumiInfoDiv = doc.getElementById('bangumiInfo');
                         // 在bangumiInfoDiv内部查找第一个<a>标签
@@ -431,11 +452,11 @@
             //获取Dom中id为atc_title的元素，即标题输入框
             var title = document.getElementById("atc_title");
             //为title赋值，格式为[国家][作者][漫画名称][卷数][网盘名称]
-            let finalTitle = "[" + postWindow.document.getElementById("country").value + "] " +
-                "[" + postWindow.document.getElementById("author").value + "] " +
+            let finalTitle = "[" + postWindow.document.getElementById("country").value + "]" +
+                "[" + postWindow.document.getElementById("author").value + "]" +
                 "[" +postWindow.document.getElementById("book").value + "]" +
-                " [" + postWindow.document.getElementById("volume").value + "]" +
-                " [" +postWindow.document.getElementById("disk").value +"]";
+                "[" + postWindow.document.getElementById("volume").value + "]" +
+                "[" +postWindow.document.getElementById("disk").value +"]";
             title.value = finalTitle;
         }
         function info_cn_entity_area_create(){
@@ -516,12 +537,12 @@
             //获取Dom中id为atc_title的元素，即标题输入框
             var title = document.getElementById("atc_title");
             //为title赋值，格式为[作者][漫画书名][卷数][出版社][网盘名称]
-            let finalTitle = "[" + postWindow.document.getElementById("author").value + "] " +
-                " [" + postWindow.document.getElementById("book").value + "]" +
-                " [" + postWindow.document.getElementById("volume").value + "]" +
-                " [" +postWindow.document.getElementById("publisher").value +"]" +
+            let finalTitle = "[" + postWindow.document.getElementById("author").value + "]" +
+                "[" + postWindow.document.getElementById("book").value + "]" +
+                "[" + postWindow.document.getElementById("volume").value + "]" +
+                "[" +postWindow.document.getElementById("publisher").value +"]" +
                 "["+postWindow.document.getElementById("scanner").value+"]"+
-                " [" +postWindow.document.getElementById("disk").value +"]";
+                "[" +postWindow.document.getElementById("disk").value +"]";
             title.value = finalTitle;
         }
 
@@ -566,14 +587,14 @@
             //获取Dom中id为atc_title的元素，即标题输入框
             var title = document.getElementById("atc_title");
             //为title赋值，格式为[作者] 漫画书名 [卷数][出版社][提取平台][网盘名称][其他信息]
-            let finalTitle = "[" + postWindow.document.getElementById("author").value + "] " +
+            let finalTitle = "[" + postWindow.document.getElementById("author").value + "]" +
                 postWindow.document.getElementById("book").value +
-                " [" + postWindow.document.getElementById("volume").value + "]" +
-                " [" +postWindow.document.getElementById("publisher").value +"]" +
-                " [" +postWindow.document.getElementById("platform").value +"]" +
-                " [" +postWindow.document.getElementById("disk").value +"]";
+                "[" + postWindow.document.getElementById("volume").value + "]" +
+                "[" +postWindow.document.getElementById("publisher").value +"]" +
+                "[" +postWindow.document.getElementById("platform").value +"]" +
+                "[" +postWindow.document.getElementById("disk").value +"]";
             if(postWindow.document.getElementById("other").value !==""){
-                finalTitle += " [" + postWindow.document.getElementById("other").value + "]";
+                finalTitle += "[" + postWindow.document.getElementById("other").value + "]";
             }
             title.value = finalTitle;
         }
