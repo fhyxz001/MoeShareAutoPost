@@ -45,7 +45,6 @@
 // @downloadURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.user.js
 // @updateURL https://update.greasyfork.org/scripts/481070/MoeShareAutoPost.meta.js
 // ==/UserScript==
-
 (function() {
     'use strict';
     var windcode = document.getElementById('wy_windcode');
@@ -123,7 +122,7 @@
                 postWindow.document.title = "中文电子分流区发帖模板";
                 //标题输入框
                 GenerateInput(postWindow,"Bangumi","BangumiURL","输入Bangumi地址，可选项。填入后支持自动刮削");
-                GenerateButton(postWindow,"自动刮削",Bangumi,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"自动刮削",Bangumi,"padding: 3px 8px; text-align: center; margin: 6px 110px;");
                 GenerateInput(postWindow,"作者","author","请输入作者名称");
                 GenerateInput(postWindow,"漫画书名","book","请输入漫画名称");
                 GenerateInput(postWindow,"卷数","volume","例如：1-7未、1-7完、单7未、单7完");
@@ -132,7 +131,7 @@
                 GenerateInput(postWindow,"网盘名称","disk","例如：BD、百度");
                 GenerateInput(postWindow,"其他信息","other","备注信息，可选项");
                 //在窗口中添加一个按钮
-                GenerateButton(postWindow,"生成标题",title_cn_electronic_area_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"生成标题",title_cn_electronic_area_create,"padding: 3px 8px; text-align: center;margin: 6px 110px;");
                 // 封面区输入框
                 GenerateInput(postWindow,"封面","cover","请输入封面文件的图床链接");
                 // 简介区输入框
@@ -145,13 +144,13 @@
                 GenerateTextArea(postWindow,"受限内容","download","可在此处输入下载链接、解压密码等信息","50px","80%");
                 GenerateInput(postWindow,"自购证明","certification","请输入自购证明的图床链接");
                 //生成简介按钮区**********
-                GenerateButton(postWindow,"生成帖子",info_cn_electronic_area_info_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"生成帖子",info_cn_electronic_area_info_create,"padding: 3px 8px; text-align: center; margin: 6px 110px;");
                 break;
             case "4":case "42":case "43":
                 //在窗口中添加一个中文实体分流区发帖模板标题
                 postWindow.document.title = "中文实体分流区发帖模板";
                 GenerateInput(postWindow,"Bangumi","BangumiURL","输入Bangumi地址，可选项。填入后支持自动刮削");
-                GenerateButton(postWindow,"自动刮削",Bangumi,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"自动刮削",Bangumi,"padding: 3px 8px; text-align: center; margin: 6px 110px;");
                 GenerateInput(postWindow,"作者","author","请输入作者名称");
                 GenerateInput(postWindow,"漫画书名","book","请输入漫画名称");
                 GenerateInput(postWindow,"卷数","volume","例如：1-7未、1-7完、单7未、单7完");
@@ -160,7 +159,7 @@
                 GenerateInput(postWindow,"扫者","scanner","多位扫描者需要用&连接，例如：A&b&c");
                 GenerateInput(postWindow,"网盘名称","disk","例如：BD、百度");
                 //添加一个按钮，生成标题
-                GenerateButton(postWindow,"生成标题",title_cn_entity_area_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"生成标题",title_cn_entity_area_create,"padding: 3px 8px; text-align: center; margin: 6px 110px;");
                 //封面区输入框
                 GenerateInput(postWindow,"封面","cover","请输入封面文件的图床链接");
                 //简介区输入框
@@ -181,20 +180,20 @@
                 // 下载链接区输入框
                 GenerateTextArea(postWindow,"受限内容","download","可在此处输入下载链接、解压密码等信息","50px","80%");
                 //生成简介按钮区**********
-                GenerateButton(postWindow,"生成帖子",info_cn_entity_area_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"生成帖子",info_cn_entity_area_create,"padding: 3px 8px; text-align: center; margin: 6px 110px;");
                 break;
             case "3":
                 //在窗口中添加一个外文原版分享区发帖模板标题
                 postWindow.document.title = "外文原版分享区发帖模板";
                 GenerateInput(postWindow,"Bangumi","BangumiURL","输入Bangumi地址，可选项。填入后支持自动刮削");
-                GenerateButton(postWindow,"自动刮削",Bangumi,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"自动刮削",Bangumi,"padding: 3px 8px; text-align: center; margin: 6px 110px;");
                 GenerateInput(postWindow,"国家","country","例如：日本");
                 GenerateInput(postWindow,"作者","author","请输入作者名称");
                 GenerateInput(postWindow,"漫画书名","book","请输入漫画名称");
                 GenerateInput(postWindow,"卷数","volume","例如：1-7未、1-7完、单7未、单7完");
                 GenerateInput(postWindow,"网盘名称","disk","例如：BD、百度");
                 //添加一个按钮，生成标题
-                GenerateButton(postWindow,"生成标题",title_en_original_area_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"生成标题",title_en_original_area_create,"padding: 3px 8px; text-align: center; margin: 6px 110px;");
                 //封面区输入框
                 GenerateInput(postWindow,"封面","cover","请输入封面文件的图床链接");
                 //简介区输入框
@@ -216,7 +215,7 @@
                 // 下载链接区输入框
                 GenerateTextArea(postWindow,"受限内容","download","可在此处输入下载链接、解压密码等信息","50px","80%");
                 //生成简介按钮区**********
-                GenerateButton(postWindow,"生成帖子",info_en_original_area_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"生成帖子",info_en_original_area_create,"padding: 3px 8px; text-align: center; margin: 6px 110px;");
                 break;
             case "17":
                 //在窗口中添加一个ACG文章转载评论区
@@ -229,13 +228,13 @@
                 postWindow.document.body.appendChild(postWindow.document.createElement("br"));
                 GenerateInput(postWindow,"新闻地址","newsUrl","请输入新闻地址");
                 //添加一个按钮，一键解析生成标题和帖子
-                GenerateButton(postWindow,"一键解析",news_title_and_info_create,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"一键解析",news_title_and_info_create,"padding: 3px 8px; text-align: center; margin: 6px 110px;");
                 break;
             default:
                 //答题模板
                 postWindow.document.title = "答题模板";
                 GenerateInput(postWindow,"题目数量","questionNum","请一次性输入全部题目的数量");
-                GenerateButton(postWindow,"生成答题框",answerListCreate,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+                GenerateButton(postWindow,"生成答题框",answerListCreate,"padding: 3px 8px; text-align: center; margin: 6px 110px;");
                 return;
         }
         function answerTotalCreate(){
@@ -264,7 +263,7 @@
             }
 	    postWindow.document.body.removeChild(postWindow.document.querySelectorAll('button')[0]);
             postWindow.document.querySelectorAll('input')[0].style.display = "none";
-            GenerateButton(postWindow,"生成帖子",answerTotalCreate,"padding: 3px 8px; text-align: center; font-size: 18px; margin: 6px 110px; cursor: pointer");
+            GenerateButton(postWindow,"生成帖子",answerTotalCreate,"padding: 3px 8px; text-align: center; margin: 6px 110px;");
         }
         function Bangumi(){
             //自动刮削功能
@@ -640,6 +639,8 @@
     function GenerateButton(postWindow,buttonInnerHTML,buttonOnclick,buttonStyle){
         var button = postWindow.document.createElement("button");
         var br = postWindow.document.createElement("br");
+        button.style.backgroundColor = "black";
+        button.style.color = "white";
         button.innerHTML = buttonInnerHTML;
         button.onclick = buttonOnclick;
         button.style = buttonStyle;
